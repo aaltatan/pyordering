@@ -14,6 +14,9 @@ class TestOrderingRegistry:
         assert len(registry) == 6
         assert "price" in registry
 
+    def test_iterates_over_key_names(self, registry):
+        assert list(registry) == list(registry.keys)
+
     def test_name_overrides_function_name(self, registry):
         assert repr(registry["id"]()) == "Ordering(id)"
 
