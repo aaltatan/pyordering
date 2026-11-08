@@ -42,19 +42,8 @@ def get_ordering_json_schema(keys: Mapping[str, Callable[..., Any]], /) -> dict[
         "type": "array",
         "items": {
             "oneOf": [
-                _without_empty_prefix_items(
-                    call_json_schema(name, factory, extra_properties=_OPTIONS)
-                )
+                call_json_schema(name, factory, extra_properties=_OPTIONS)
                 for name, factory in keys.items()
             ]
         },
     }
-
-
-def _without_empty_prefix_items(schema: dict[str, Any]) -> dict[str, Any]:
-    # shortcut: pyvocabulary emits `"prefixItems": []`, which draft 2020-12 forbids;
-    # drop this once pyvocabulary omits it (`"items": false` alone already means no args).
-    args = schema["properties"]["args"]
-    if args.get("prefixItems") == []:
-        del args["prefixItems"]
-    return schema
