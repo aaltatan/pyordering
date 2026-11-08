@@ -1,9 +1,9 @@
 # pyordering
 
-Sort orders as composable values (planned). `stars(descending=True) >> price() >> name()`
+Sort orders as composable values. `~stars() >> price() >> name()`
 is an `Ordering`: keys applied left to right, sorting in memory with stable multi-pass
 sorts, compilable from `[{"name": "stars", "descending": true}]`, and renderable to ORM
-`order_by` clauses. Nothing is implemented yet. Phase 1 is a written design only: do not write library code until the author confirms a real project needs this package.
+`order_by` clauses. Phases 1-3 are done (0.1 built, not published); Phase 4 is the release.
 
 ## The family
 
@@ -19,7 +19,7 @@ errors, and a JSON Schema generated from signatures.
 | pyflowstep | `T -> T` | `>>` | released |
 | pyvocabulary | shared core: `Vocabulary`, JSON Schema, path notes | — | 0.1 built, not published |
 | pyruleset | `T -> V`, first match wins | `\|` | 0.1 built, not published |
-| pyordering | `T -> sort key` | `>>`, `~` | planned |
+| pyordering | `T -> sort key` | `>>`, `~` | 0.1 built, not published |
 | pyaggregation | `Iterable[T] -> dict` | `&` | planned |
 | pyprojection | `T -> dict` | `&` | planned |
 
@@ -88,6 +88,6 @@ The package is `pyordering` under `src/`, built with `uv_build`.
 Paste this into a new Claude conversation linked to this computer:
 
 > You are working on `pyordering` in `~/dev/pyordering`. Read `CLAUDE.md` and `PHASES.md` there
-> first and follow them exactly. Continue with the next unchecked phase, which is a written design: do not write library code until the author confirms. Work on a new git branch, run the full check on
+> first and follow them exactly. Continue with the next unchecked phase. Work on a new git branch, run the full check on
 > Python 3.12 and 3.13, tick what you finish in `PHASES.md`, and commit. Do not push or
 > publish. When done, summarise what changed and what the next unchecked item is.
