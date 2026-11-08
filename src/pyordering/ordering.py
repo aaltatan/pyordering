@@ -47,11 +47,14 @@ class Key[T]:
     def __post_init__(self) -> None:
         if self.nulls not in NULLS:
             msg = f"Invalid nulls {self.nulls!r}. Valid values: {', '.join(NULLS)}"
+
             raise InvalidKeyError(msg)
 
     def __str__(self) -> str:
         direction = "~" if self.descending else ""
+
         nulls = " nulls first" if self.nulls == "first" else ""
+
         return f"{direction}{self.name}{nulls}"
 
 
@@ -144,6 +147,7 @@ class Ordering[T]:
             render(cast("Callable[[object], Any]", k.value)(subject), k.descending, k.nulls)
             for k in self.keys
         ]
+
         return tuple(
             clause
             for item in rendered
@@ -184,6 +188,7 @@ def key[T, **P](fn: KeyFn[T, P], /, *, name: str | None = None) -> KeyFactory[T,
 
     """
     key_name = name or getattr(fn, "__name__", repr(fn))
+
     arguments = _arguments_signature(fn, key_name)
 
     @wraps(fn)
@@ -192,10 +197,13 @@ def key[T, **P](fn: KeyFn[T, P], /, *, name: str | None = None) -> KeyFactory[T,
             bound = arguments.bind(*args, **kwargs)
         except TypeError as error:
             msg = f"Key '{key_name}' got invalid arguments: {error}"
+
             raise KeyArgumentError(msg) from error
+
         return Ordering((Key(key_name, lambda subject: fn(subject, *bound.args, **bound.kwargs)),))
 
     factory.__signature__ = arguments  # type: ignore[attr-defined]
+
     return factory
 
 
@@ -205,13 +213,17 @@ def key[T, **P](fn: KeyFn[T, P], /, *, name: str | None = None) -> KeyFactory[T,
 def _sort_by[T](items: list[T], key: Key[T]) -> list[T]:
     # Nulls are split off first: `None` does not compare with other values.
     pairs = [(key.value(item), item) for item in items]
+
     present = sorted(
         (pair for pair in pairs if pair[0] is not None),
         key=itemgetter(0),
         reverse=key.descending,  # `reverse` keeps the sort stable
     )
+
     ordered = [item for _, item in present]
+
     missing = [item for value, item in pairs if value is None]
+
     return [*missing, *ordered] if key.nulls == "first" else [*ordered, *missing]
 
 
@@ -221,6 +233,7 @@ def _arguments_signature(fn: Callable[..., Any], name: str) -> Signature:
         subject, *parameters = signature(fn).parameters.values()
     except ValueError as error:
         msg = f"Key '{name}' must accept the subject as its first positional parameter"
+
         raise InvalidKeyError(msg) from error
 
     if subject.kind not in (Parameter.POSITIONAL_ONLY, Parameter.POSITIONAL_OR_KEYWORD):
@@ -228,6 +241,7 @@ def _arguments_signature(fn: Callable[..., Any], name: str) -> Signature:
             f"Key '{name}' must accept the subject as its first positional parameter, "
             f"got {subject.kind.description} parameter '{subject.name}'"
         )
+
         raise InvalidKeyError(msg)
 
     return Signature(parameters)

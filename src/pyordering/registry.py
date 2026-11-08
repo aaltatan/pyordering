@@ -96,6 +96,9 @@ class OrderingRegistry[T]:
 
         """
         key_name = name or getattr(fn, "__name__", "")
+
         factory = key(fn, name=key_name)
+
         factory.__doc__ = description or fn.__doc__
+
         return self._keys.add(key_name, factory, hidden=hidden)

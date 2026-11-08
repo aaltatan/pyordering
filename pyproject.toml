@@ -1,6 +1,6 @@
 [project]
 name = "pyordering"
-version = "0.1.0"
+version = "0.1.1"
 description = "Sort orders as composable values: stars(descending=True) >> price(), definable as JSON."
 readme = "README.md"
 authors = [
