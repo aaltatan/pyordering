@@ -9,3 +9,6 @@ wheels/
 # Virtual environments
 .venv
 .coverage
+
+# mkdocs build output
+site/

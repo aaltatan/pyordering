@@ -27,6 +27,7 @@ classifiers = [
 [project.urls]
 Homepage = "https://github.com/aaltatan/pyordering"
 Repository = "https://github.com/aaltatan/pyordering"
+Documentation = "https://aaltatan.github.io/pyordering/"
 Issues = "https://github.com/aaltatan/pyordering/issues"
 
 [build-system]
@@ -40,6 +41,9 @@ dev = [
     "pytest>=9.1.1",
     "pytest-cov>=6.0",
     "sqlalchemy>=2.1.8",
+]
+docs = [
+    "mkdocs-material>=9.8.2",
 ]
 
 [tool.pytest.ini_options]
