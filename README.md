@@ -1,5 +1,7 @@
 # pyordering
 
+**Documentation: <https://aaltatan.github.io/pyordering/>**
+
 Sort orders as composable values. `~stars() >> price() >> name()` is an `Ordering`: keys
 applied left to right that sort lists in memory, compile from JSON, and render to
 SQLAlchemy or Django `order_by` clauses.
